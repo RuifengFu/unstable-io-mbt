@@ -30,11 +30,14 @@ pub fn read_char() -> Char? {
 /// # Returns
 /// An optional string containing the line of text. Returns `None` if EOF is reached.
 pub fn read_line_from_stdin() -> String? {
-  let buf = Buffer::new()
+  let buf = @buffer.new()
   while true {
     let c = read_char()
     match c {
-      None => return None
+      None => return match buf.to_string() {
+          "" => None
+          s => Some(s)
+        }
       Some('\n') => {
         buf.write_char('\n')
         break
